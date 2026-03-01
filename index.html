@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>La Cafebrería — Café & Librería · Maracay</title>
   <meta name="description" content="La Cafebrería: donde el café y los libros se encuentran. Eventos culturales, jazz en vivo y stand-up comedy en Maracay, Venezuela.">
 
@@ -493,8 +496,8 @@
       <span style="font-family:'Cormorant Garamond',serif; font-size:0.58rem; letter-spacing:0.3em; text-transform:uppercase; color:#C9A84C; margin-top:2px;">Café · Librería · Cultura</span>
     </a>
 
-    <!-- Desktop links -->
-    <div id="nav-desktop-links">
+    <!-- Desktop links: oculto por inline style, JS lo muestra en desktop -->
+    <div id="nav-desktop-links" style="display:none; align-items:center; gap:32px;">
       <a href="#inicio"      class="nav-link">Inicio</a>
       <a href="#nosotros"    class="nav-link">Nosotros</a>
       <a href="#servicios"   class="nav-link">Servicios</a>
@@ -504,8 +507,9 @@
       <a href="https://calendly.com" target="_blank" class="btn-gold" style="padding:10px 22px; font-size:0.72rem;">Reservar</a>
     </div>
 
-    <!-- Hamburger -->
-    <button id="ham-btn" onclick="toggleMobileNav()">
+    <!-- Hamburger: visible por inline style, JS lo oculta en desktop -->
+    <button id="ham-btn" onclick="toggleMobileNav()"
+      style="display:flex; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px;">
       <span style="width:22px; height:2px; background:#FAF7F0; display:block;"></span>
       <span style="width:22px; height:2px; background:#FAF7F0; display:block;"></span>
       <span style="width:14px; height:2px; background:#FAF7F0; display:block; margin-left:auto;"></span>
@@ -1094,16 +1098,19 @@
     nav.classList.toggle('scrolled', window.scrollY > 60);
   }, { passive: true });
 
-  // ─── Nav responsive (JS garantizado sobre CSS) ───
+  // ─── Nav responsive (matchMedia — fiable en iOS Safari) ─
   const navLinks = document.getElementById('nav-desktop-links');
   const hamBtn   = document.getElementById('ham-btn');
-  function setNavMode() {
-    const mobile = window.innerWidth < 768;
-    navLinks.style.display = mobile ? 'none'  : 'flex';
-    hamBtn.style.display   = mobile ? 'flex'  : 'none';
+  const mq       = window.matchMedia('(min-width: 768px)');
+  function setNavMode(e) {
+    const isDesktop = e.matches;
+    navLinks.style.display = isDesktop ? 'flex' : 'none';
+    hamBtn.style.display   = isDesktop ? 'none' : 'flex';
   }
-  setNavMode();
-  window.addEventListener('resize', setNavMode);
+  setNavMode(mq);
+  try { mq.addEventListener('change', setNavMode); }
+  catch(e) { mq.addListener(function() { setNavMode(mq); }); }
+  window.addEventListener('resize', function() { setNavMode(mq); }, { passive: true });
 
   // ─── Mobile nav ──────────────────────────────────
   function toggleMobileNav() {
