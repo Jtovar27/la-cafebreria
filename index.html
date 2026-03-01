@@ -68,6 +68,21 @@
       backdrop-filter: blur(12px);
       box-shadow: 0 1px 0 rgba(201,168,76,0.2);
     }
+
+    /* ── FIX: contenedor interno del nav ── */
+    #navbar > div {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px; /* evita colisión entre logo y hamburger */
+    }
+    @media (max-width: 480px) {
+      #navbar > div { padding: 16px 16px; }
+    }
+
     .nav-link {
       font-family: 'Cormorant Garamond', serif;
       font-size: 0.78rem;
@@ -394,6 +409,7 @@
       border: none;
       cursor: pointer;
       padding: 4px;
+      flex-shrink: 0; /* nunca se comprime */
     }
     @media (min-width: 768px) {
       #nav-desktop-links { display: flex; }
@@ -488,15 +504,16 @@
      NAVBAR
 ══════════════════════════════════════════════════ -->
 <nav id="navbar">
-  <div style="max-width:1200px; margin:0 auto; padding:20px 24px; display:flex; align-items:center; justify-content:space-between;">
+  <!-- gap:12px + flex-shrink en logo y ham-btn evitan la colisión -->
+  <div>
 
-    <!-- Logo -->
-    <a href="#inicio" style="text-decoration:none; display:flex; flex-direction:column; line-height:1;">
-      <span style="font-family:'Playfair Display',serif; font-size:1.35rem; font-style:italic; color:#FAF7F0; letter-spacing:0.03em;">La Cafebrería</span>
-      <span style="font-family:'Cormorant Garamond',serif; font-size:0.58rem; letter-spacing:0.3em; text-transform:uppercase; color:#C9A84C; margin-top:2px;">Café · Librería · Cultura</span>
+    <!-- Logo: clamp() escala el texto, flex-shrink:1 + min-width:0 ceden espacio si hace falta -->
+    <a href="#inicio" style="text-decoration:none; display:flex; flex-direction:column; line-height:1; min-width:0; flex-shrink:1;">
+      <span style="font-family:'Playfair Display',serif; font-size:clamp(1rem,4.5vw,1.35rem); font-style:italic; color:#FAF7F0; letter-spacing:0.03em; white-space:nowrap;">La Cafebrería</span>
+      <span style="font-family:'Cormorant Garamond',serif; font-size:clamp(0.45rem,1.5vw,0.58rem); letter-spacing:0.3em; text-transform:uppercase; color:#C9A84C; margin-top:2px; white-space:nowrap;">Café · Librería · Cultura</span>
     </a>
 
-    <!-- Desktop links: oculto por inline style, JS lo muestra en desktop -->
+    <!-- Desktop links -->
     <div id="nav-desktop-links" style="display:none; align-items:center; gap:32px;">
       <a href="#inicio"      class="nav-link">Inicio</a>
       <a href="#nosotros"    class="nav-link">Nosotros</a>
@@ -507,9 +524,9 @@
       <a href="https://calendly.com" target="_blank" class="btn-gold" style="padding:10px 22px; font-size:0.72rem;">Reservar</a>
     </div>
 
-    <!-- Hamburger: visible por inline style, JS lo oculta en desktop -->
+    <!-- Hamburger: flex-shrink:0 lo mantiene siempre visible sin comprimirse -->
     <button id="ham-btn" onclick="toggleMobileNav()"
-      style="display:flex; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px;">
+      style="display:flex; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; flex-shrink:0;">
       <span style="width:22px; height:2px; background:#FAF7F0; display:block;"></span>
       <span style="width:22px; height:2px; background:#FAF7F0; display:block;"></span>
       <span style="width:14px; height:2px; background:#FAF7F0; display:block; margin-left:auto;"></span>
