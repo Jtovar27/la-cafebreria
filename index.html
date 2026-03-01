@@ -1094,6 +1094,17 @@
     nav.classList.toggle('scrolled', window.scrollY > 60);
   }, { passive: true });
 
+  // ─── Nav responsive (JS garantizado sobre CSS) ───
+  const navLinks = document.getElementById('nav-desktop-links');
+  const hamBtn   = document.getElementById('ham-btn');
+  function setNavMode() {
+    const mobile = window.innerWidth < 768;
+    navLinks.style.display = mobile ? 'none'  : 'flex';
+    hamBtn.style.display   = mobile ? 'flex'  : 'none';
+  }
+  setNavMode();
+  window.addEventListener('resize', setNavMode);
+
   // ─── Mobile nav ──────────────────────────────────
   function toggleMobileNav() {
     document.getElementById('mobile-nav').classList.toggle('open');
