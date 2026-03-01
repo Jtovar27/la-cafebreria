@@ -377,6 +377,26 @@
     .typing span:nth-child(3) { animation-delay: 0.4s; }
     @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-7px)} }
 
+    /* ─── Nav responsive ─── */
+    #nav-desktop-links {
+      display: none;
+      align-items: center;
+      gap: 32px;
+    }
+    #ham-btn {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    @media (min-width: 768px) {
+      #nav-desktop-links { display: flex; }
+      #ham-btn           { display: none; }
+    }
+
     /* ─── Mobile menu ─── */
     #mobile-nav {
       position: fixed; inset: 0; z-index: 49;
@@ -474,7 +494,7 @@
     </a>
 
     <!-- Desktop links -->
-    <div style="align-items:center; gap:32px;" class="hidden md:flex">
+    <div id="nav-desktop-links">
       <a href="#inicio"      class="nav-link">Inicio</a>
       <a href="#nosotros"    class="nav-link">Nosotros</a>
       <a href="#servicios"   class="nav-link">Servicios</a>
@@ -485,11 +505,10 @@
     </div>
 
     <!-- Hamburger -->
-    <button id="ham-btn" class="md:hidden" onclick="toggleMobileNav()"
-      style="background:none; border:none; cursor:pointer; display:flex; flex-direction:column; gap:5px; padding:4px;">
-      <span style="width:22px; height:1.5px; background:#FAF7F0; display:block; transition:all 0.3s;"></span>
-      <span style="width:22px; height:1.5px; background:#FAF7F0; display:block; transition:all 0.3s;"></span>
-      <span style="width:14px; height:1.5px; background:#FAF7F0; display:block; margin-left:auto; transition:all 0.3s;"></span>
+    <button id="ham-btn" onclick="toggleMobileNav()">
+      <span style="width:22px; height:2px; background:#FAF7F0; display:block;"></span>
+      <span style="width:22px; height:2px; background:#FAF7F0; display:block;"></span>
+      <span style="width:14px; height:2px; background:#FAF7F0; display:block; margin-left:auto;"></span>
     </button>
   </div>
 </nav>
